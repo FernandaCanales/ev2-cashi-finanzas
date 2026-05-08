@@ -1,14 +1,14 @@
-import { router, useLocalSearchParams } from 'expo-router'
+import { Stack, router, useLocalSearchParams } from 'expo-router'
 import {
-    KeyboardAvoidingView,
-    Platform,
-    SafeAreaView,
-    ScrollView,
-    StyleSheet,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View,
+  KeyboardAvoidingView,
+  Platform,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from 'react-native'
 import { useCategories } from '../../../hooks/useCategories'
 import { useTransactionForm } from '../../../hooks/useTransactionForm'
@@ -47,6 +47,7 @@ export default function TransactionFormScreen() {
 
   return (
     <SafeAreaView style={styles.safe}>
+      <Stack.Screen options={{ title: isEditing ? 'Editar Transacción' : 'Nueva Transacción' }} />
       <KeyboardAvoidingView
         style={styles.container}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -64,7 +65,7 @@ export default function TransactionFormScreen() {
                 onPress={() => setType('income')}
               >
                 <Text style={[styles.typeText, type === 'income' && styles.typeTextActive]}>
-                  💰 Ingreso
+                   Ingreso
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
@@ -72,7 +73,7 @@ export default function TransactionFormScreen() {
                 onPress={() => setType('expense')}
               >
                 <Text style={[styles.typeText, type === 'expense' && styles.typeTextActive]}>
-                  💸 Gasto
+                   Gasto
                 </Text>
               </TouchableOpacity>
             </View>

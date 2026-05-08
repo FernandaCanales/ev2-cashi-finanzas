@@ -13,27 +13,11 @@ export default function TabLayout() {
         },
       }}
     >
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: 'Transacciones',
-          tabBarLabel: 'Transacciones',
-        }}
-      />
-      <Tabs.Screen
-        name="balance"
-        options={{
-          title: 'Balance',
-          tabBarLabel: 'Balance',
-        }}
-      />
-      <Tabs.Screen
-        name="categories"
-        options={{
-          title: 'Categorías',
-          tabBarLabel: 'Categorías',
-        }}
-      />
+      <Tabs.Screen name="index" options={{ title: 'Transacciones', tabBarLabel: 'Transacciones' }} />
+      <Tabs.Screen name="balance" options={{ title: 'Balance', tabBarLabel: 'Balance' }} />
+      <Tabs.Screen name="categories" options={{ title: 'Categorías', tabBarLabel: 'Categorías' }} />
+      <Tabs.Screen name="category/[id]" options={{ href: null }} />
+      <Tabs.Screen name="transaction/[id]" options={{ href: null }} />
     </Tabs>
   )
 }
