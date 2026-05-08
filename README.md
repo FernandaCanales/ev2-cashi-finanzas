@@ -1,77 +1,84 @@
-# React Native Clean Initial
+# Cashi — App Mobile de Finanzas Personales
 
-Starter minimalista de **React Native** con **Expo** + **Expo Router** + **TypeScript**.
+Aplicación móvil de finanzas personales desarrollada con React Native + Expo para la Evaluación 2 del ramo Desarrollo de Aplicaciones Móviles.
 
-Creado para usar como base en proyectos de aplicaciones móviles. Incluye navegación por tabs, estructura de carpetas ordenada y configuración lista para desarrollar.
+---
 
-## Requisitos
+## ¿Qué hace la app?
 
-- Node.js 18+
-- yarn (v1.22.4) — habilitar con Corepack:
+- Login con credenciales hardcodeadas
+- Gestión de categorías (crear, listar, editar, eliminar)
+- Gestión de transacciones (crear, listar, editar, eliminar)
+- Pantalla de balance con total ingresos, egresos y balance
+- Datos persistidos en el dispositivo con AsyncStorage
 
-```bash
-corepack enable
-corepack prepare yarn@1.22.4 --activate
-```
+---
 
-## Clonar (sin historial git)
+## Cómo instalar y correr la app
 
-```bash
-npx degit borisbelmar/react-native-clean-initial mi-app
-cd mi-app
-yarn install
-```
+### Requisitos previos
+- Node.js v24
+- Yarn
+- Expo Go instalado en tu teléfono
 
-> `degit` descarga el proyecto sin la carpeta `.git`, ideal para empezar desde cero sin historial.
+### Pasos
 
-## Iniciar la app
+1. Clonar el repositorio:
+   git clone https://github.com/FernandaCanales/ev2-cashi-finanzas.git
 
-```bash
-yarn start
-```
+2. Entrar a la carpeta:
+   cd ev2-cashi-finanzas
 
-Esto abre el menú de Expo. Desde ahí podés abrir la app en:
+3. Instalar dependencias:
+   yarn install
 
-- **Expo Go** — escaneando el QR con tu celular
-- **Emulador Android** — presionando `a`
-- **Simulador iOS** — presionando `i` (solo macOS)
-- **Web** — presionando `w`
+4. Correr la app:
+   yarn start
 
-### Comandos directos
+5. Escanear el QR con Expo Go
 
-```bash
-yarn android    # Abrir directamente en emulador Android
-yarn ios        # Abrir directamente en simulador iOS
-yarn web        # Abrir directamente en el navegador
-```
+### Credenciales de acceso
+- Email: fernanda@correo.cl
+- Contraseña: blabla123
 
-## Estructura del proyecto
+---
 
-```
-app/                  # Pantallas y navegación (file-based routing)
-  _layout.tsx         # Layout raíz
-  (tabs)/             # Grupo de rutas con tabs
-    _layout.tsx       # Configuración de los tabs
-    index.tsx         # Pantalla de inicio
-    explore.tsx       # Pantalla explorar
-assets/               # Imágenes, fuentes y otros recursos
-components/           # Componentes reutilizables
-constants/            # Constantes y configuración
-```
+## Arquitectura
 
-## Tecnologías incluidas
+La app sigue el patrón de separación entre lógica y presentación:
 
-| Paquete                       | Versión |
-| ----------------------------- | ------- |
-| expo                          | ~54.0   |
-| expo-router                   | ~6.0    |
-| react-native                  | 0.81    |
-| react                         | 19.1    |
-| typescript                    | ~5.9    |
-| @react-navigation/bottom-tabs | ^7.4    |
+- **Hooks** — contienen toda la lógica y el acceso a AsyncStorage
+- **Pantallas** — solo renderizan, no tienen lógica de negocio
 
-## Recursos útiles
+### Hooks creados
+- `useCategories` — CRUD de categorías
+- `useTransactions` — CRUD de transacciones + cálculo del balance
+- `useCategoryForm` — validación del formulario de categorías con Zod
+- `useTransactionForm` — validación del formulario de transacciones con Zod
 
-- [Documentación de Expo](https://docs.expo.dev/)
-- [Documentación de Expo Router](https://docs.expo.dev/router/introduction/)
-- [Documentación de React Native](https://reactnative.dev/)
+---
+
+## Uso de IA
+
+Se utilizó Claude (Anthropic) como asistente durante el desarrollo.
+
+**Para qué se usó:**
+- Generación de la estructura base de hooks y pantallas
+- Corrección de errores de compatibilidad con Zod v4
+- Configuración de rutas dinámicas con Expo Router
+
+**Qué aprendimos:**
+- La importancia de separar la lógica en custom hooks
+- Cómo funciona el patrón read-modify-write de AsyncStorage
+- Por qué el balance debe calcularse en el hook y no en el componente
+- Cómo usar `useFocusEffect` para actualizar datos al volver a una pantalla
+
+---
+
+## Tecnologías usadas
+
+- React Native + Expo SDK 54
+- TypeScript
+- Expo Router v6
+- AsyncStorage v2
+- Zod v4

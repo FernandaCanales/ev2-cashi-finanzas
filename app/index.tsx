@@ -1,14 +1,14 @@
 import { router } from 'expo-router'
 import { useState } from 'react'
 import {
-    KeyboardAvoidingView,
-    Platform,
-    SafeAreaView,
-    StyleSheet,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View,
+  KeyboardAvoidingView,
+  Platform,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from 'react-native'
 
 const VALID_EMAIL = 'fernanda@correo.cl'
@@ -34,10 +34,12 @@ export default function LoginScreen() {
         style={styles.container}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       >
-        <View style={styles.card}>
-          <Text style={styles.logo}>💰</Text>
-          <Text style={styles.title}>Cashi</Text>
-          <Text style={styles.subtitle}>Tus finanzas, bajo control</Text>
+   <View style={styles.card}>
+  <View style={styles.logoCircle}>
+    <Text style={styles.logoText}>C</Text>
+  </View>
+  <Text style={styles.title}>Cashi</Text>
+  <Text style={styles.subtitle}>Tus finanzas, bajo control</Text>
 
           <TextInput
             style={styles.input}
@@ -92,10 +94,20 @@ const styles = StyleSheet.create({
     shadowRadius: 8,
     elevation: 4,
   },
-  logo: {
-    fontSize: 48,
-    marginBottom: 8,
-  },
+ logoCircle: {
+  width: 70,
+  height: 70,
+  borderRadius: 35,
+  backgroundColor: '#410455',
+  alignItems: 'center',
+  justifyContent: 'center',
+  marginBottom: 8,
+},
+logoText: {
+  fontSize: 36,
+  fontWeight: 'bold',
+  color: '#fff',
+},
   title: {
     fontSize: 32,
     fontWeight: 'bold',
