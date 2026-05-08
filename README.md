@@ -4,7 +4,11 @@ Aplicación móvil de finanzas personales desarrollada con React Native + Expo p
 
 ---
 
-## ¿Qué hace la app?
+## Video demostrativo
+
+https://youtube.com/...
+
+## Que hace la app
 
 - Login con credenciales hardcodeadas
 - Gestión de categorías (crear, listar, editar, eliminar)
@@ -32,10 +36,16 @@ Aplicación móvil de finanzas personales desarrollada con React Native + Expo p
 3. Instalar dependencias:
    yarn install
 
-4. Correr la app:
+4. Instalar AsyncStorage:
+   npx expo install @react-native-async-storage/async-storage
+
+5. Instalar Zod:
+   yarn add zod
+
+6. Correr la app:
    yarn start
 
-5. Escanear el QR con Expo Go
+7. Escanear el QR con Expo Go
 
 ### Credenciales de acceso
 - Email: fernanda@correo.cl
