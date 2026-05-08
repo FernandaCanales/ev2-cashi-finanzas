@@ -50,6 +50,7 @@ export const useTransactions = () => {
     await persist(transactions.filter(t => t.id !== id))
   }
 
+//EXTRA: calculo automático
   const totalIncome = transactions
     .filter(t => t.type === 'income')
     .reduce((sum, t) => sum + t.amount, 0)
@@ -59,6 +60,7 @@ export const useTransactions = () => {
     .reduce((sum, t) => sum + t.amount, 0)
 
   const balance = totalIncome - totalExpense
+  
 
   return {
     transactions,

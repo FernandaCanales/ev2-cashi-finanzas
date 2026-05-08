@@ -15,6 +15,7 @@ export const useTransactionForm = ({ defaultValues, onSubmit }: UseTransactionFo
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [submitting, setSubmitting] = useState(false)
 
+  //Actualiza los automáticamente los estados del formulario (añadi despues de probar la app en el cel)
   useEffect(() => {
     if (defaultValues) {
       setAmount(defaultValues.amount?.toString() ?? '')
@@ -22,12 +23,7 @@ export const useTransactionForm = ({ defaultValues, onSubmit }: UseTransactionFo
       setDescription(defaultValues.description ?? '')
       setCategoryId(defaultValues.categoryId ?? '')
     }
-  }, [
-    defaultValues?.amount,
-    defaultValues?.type,
-    defaultValues?.description,
-    defaultValues?.categoryId,
-  ])
+  }, [defaultValues])
 
   const handleSubmit = async () => {
     const result = createTransactionSchema.safeParse({

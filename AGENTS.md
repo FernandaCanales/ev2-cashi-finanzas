@@ -50,6 +50,11 @@ los errores encontrados y las soluciones aplicadas.
 **Por qué:** Mismo problema que el Error 5 pero en useCategoryForm. Además faltaba useFocusEffect para recargar las categorías al entrar al formulario.
 **Solución:** Agregar useEffect en useCategoryForm y useFocusEffect con reloadCategories en el formulario de categoría.
 
+### Error 7 — useEffect con dependencias incompletas
+**Qué pasó:** VS Code marcó una advertencia amarilla en useTransactionForm porque el useEffect tenía las propiedades individuales de defaultValues en la lista de dependencias en vez del objeto completo.
+**Error:** "React Hook useEffect has a missing dependency: defaultValues"
+**Solución:** Reemplazar la lista de dependencias individuales por [defaultValues] simplificando el código y eliminando la advertencia.
+
 ## Qué aprendimos del proceso
 
 - Siempre verificar la versión de las librerías antes de usar la sintaxis que sugiere la IA

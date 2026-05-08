@@ -3,6 +3,7 @@ import { useCallback, useEffect, useState } from 'react'
 import type { CreateCategoryInput } from '../schemas'
 import type { Category } from '../types'
 
+//CARGA LOS DATOS
 const STORAGE_KEY = 'categories'
 
 export const useCategories = () => {
@@ -22,10 +23,12 @@ export const useCategories = () => {
     }
   }, [])
 
+
   useEffect(() => {
     loadCategories()
   }, [loadCategories])
 
+// GUARDA DATOS EN ASYNC STORAGE Y ACTUALIZA EL ESTADO
   const persist = async (newCategories: Category[]) => {
     await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(newCategories))
     setCategories(newCategories)
@@ -38,6 +41,7 @@ export const useCategories = () => {
     }
     await persist([...categories, newCategory])
   }
+  
 
   const updateCategory = async (id: string, input: CreateCategoryInput) => {
     await persist(
