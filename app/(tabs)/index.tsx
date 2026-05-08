@@ -13,12 +13,13 @@ import { useTransactions } from '../../hooks/useTransactions'
 
 export default function TransactionsScreen() {
   const { transactions, loading, deleteTransaction, reload } = useTransactions()
-  const { categories } = useCategories()
+  const { categories, reload: reloadCategories } = useCategories()
 
   useFocusEffect(
     useCallback(() => {
       reload()
-    }, [reload])
+      reloadCategories()
+    }, [reload, reloadCategories])
   )
 
   const getCategoryName = (categoryId: string) => {

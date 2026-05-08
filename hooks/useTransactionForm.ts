@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import type { CreateTransactionInput } from '../schemas'
 import { createTransactionSchema } from '../schemas'
 
@@ -14,6 +14,20 @@ export const useTransactionForm = ({ defaultValues, onSubmit }: UseTransactionFo
   const [categoryId, setCategoryId] = useState(defaultValues?.categoryId ?? '')
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [submitting, setSubmitting] = useState(false)
+
+  useEffect(() => {
+    if (defaultValues) {
+      setAmount(defaultValues.amount?.toString() ?? '')
+      setType(defaultValues.type ?? 'income')
+      setDescription(defaultValues.description ?? '')
+      setCategoryId(defaultValues.categoryId ?? '')
+    }
+  }, [
+    defaultValues?.amount,
+    defaultValues?.type,
+    defaultValues?.description,
+    defaultValues?.categoryId,
+  ])
 
   const handleSubmit = async () => {
     const result = createTransactionSchema.safeParse({
@@ -44,16 +58,10 @@ export const useTransactionForm = ({ defaultValues, onSubmit }: UseTransactionFo
   }
 
   return {
-    amount,
-    setAmount,
-    type,
-    setType,
-    description,
-    setDescription,
-    categoryId,
-    setCategoryId,
-    errors,
-    submitting,
-    handleSubmit,
+    amount, setAmount,
+    type, setType,
+    description, setDescription,
+    categoryId, setCategoryId,
+    errors, submitting, handleSubmit,
   }
 }

@@ -1,4 +1,5 @@
-import { Stack, router, useLocalSearchParams } from 'expo-router'
+import { Stack, router, useFocusEffect, useLocalSearchParams } from 'expo-router'
+import { useCallback } from 'react'
 import {
   KeyboardAvoidingView,
   Platform,
@@ -17,8 +18,15 @@ import { useTransactions } from '../../../hooks/useTransactions'
 export default function TransactionFormScreen() {
   const { id } = useLocalSearchParams<{ id: string }>()
   const isEditing = id !== 'new'
-  const { transactions, createTransaction, updateTransaction } = useTransactions()
-  const { categories } = useCategories()
+  const { transactions, createTransaction, updateTransaction, reload: reloadTransactions } = useTransactions()
+  const { categories, reload: reloadCategories } = useCategories()
+
+  useFocusEffect(
+    useCallback(() => {
+      reloadTransactions()
+      reloadCategories()
+    }, [reloadTransactions, reloadCategories])
+  )
 
   const transaction = isEditing ? transactions.find(t => t.id === id) : undefined
 
@@ -65,7 +73,7 @@ export default function TransactionFormScreen() {
                 onPress={() => setType('income')}
               >
                 <Text style={[styles.typeText, type === 'income' && styles.typeTextActive]}>
-                   Ingreso
+                  Ingreso
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
@@ -73,7 +81,7 @@ export default function TransactionFormScreen() {
                 onPress={() => setType('expense')}
               >
                 <Text style={[styles.typeText, type === 'expense' && styles.typeTextActive]}>
-                   Gasto
+                  Gasto
                 </Text>
               </TouchableOpacity>
             </View>
@@ -102,7 +110,7 @@ export default function TransactionFormScreen() {
             <Text style={styles.label}>Categoría</Text>
             {categories.length === 0 ? (
               <Text style={styles.warning}>
-                ⚠️ Primero crea una categoría en la pestaña Categorías
+                Primero crea una categoría en la pestaña Categorías
               </Text>
             ) : (
               <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.categoriesScroll}>

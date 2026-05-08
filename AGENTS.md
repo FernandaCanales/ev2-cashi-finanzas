@@ -33,8 +33,30 @@ los errores encontrados y las soluciones aplicadas.
 
 ---
 
+### Error 4 — Categorías no se actualizaban en el formulario de transacción
+**Qué pasó:** Al agregar una nueva categoría y volver al formulario de transacción, solo aparecía la primera categoría creada.
+**Por qué:** El hook useCategories dentro del formulario de transacción no recargaba los datos al entrar a la pantalla.
+**Solución:** Agregar useFocusEffect con reloadCategories dentro del formulario de transacción para que recargue las categorías cada vez que se abre la pantalla.
+
+### Error 5 — Formulario de transacción no precargaba datos al editar
+**Qué pasó:** Al editar una transacción, el formulario aparecía vacío o con datos incorrectos. Solo funcionaba la primera vez.
+**Por qué:** useTransactionForm inicializaba los valores solo una vez. Cuando useFocusEffect recargaba las transacciones, los defaultValues ya no se aplicaban porque el formulario ya estaba creado.
+**Solución:** Agregar useEffect dentro de useTransactionForm para actualizar los campos cuando cambian los defaultValues.
+
+---
+
+### Error 6 — Formulario de categoría no precargaba datos al editar
+**Qué pasó:** Al editar una categoría, el nombre no aparecía precargado. Solo permitía editar la primera categoría correctamente.
+**Por qué:** Mismo problema que el Error 5 pero en useCategoryForm. Además faltaba useFocusEffect para recargar las categorías al entrar al formulario.
+**Solución:** Agregar useEffect en useCategoryForm y useFocusEffect con reloadCategories en el formulario de categoría.
+
 ## Qué aprendimos del proceso
 
 - Siempre verificar la versión de las librerías antes de usar la sintaxis que sugiere la IA
 - La IA puede generar código correcto en concepto pero con detalles de versión incorrectos
 - Es importante probar cada pantalla en el dispositivo real para detectar errores visuales
+- Los hooks se inicializan una sola vez — si los datos cambian después, hay que usar useEffect para sincronizar los valores
+- useFocusEffect es clave en React Native para recargar datos cada vez que el usuario vuelve a una pantalla
+- El patrón read-modify-write de AsyncStorage debe aplicarse en el hook, nunca en el componente
+- Probar el flujo completo de la app (crear, editar, eliminar) es fundamental para detectar errores que no aparecen probando cada pantalla por separado
+- La IA genera una base funcional, pero los errores de comportamiento real solo se detectan usando la app en el dispositivo

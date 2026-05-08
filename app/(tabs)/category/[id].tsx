@@ -1,4 +1,5 @@
-import { Stack, router, useLocalSearchParams } from 'expo-router'
+import { Stack, router, useFocusEffect, useLocalSearchParams } from 'expo-router'
+import { useCallback } from 'react'
 import {
   KeyboardAvoidingView,
   Platform,
@@ -15,7 +16,13 @@ import { useCategoryForm } from '../../../hooks/useCategoryForm'
 export default function CategoryFormScreen() {
   const { id } = useLocalSearchParams<{ id: string }>()
   const isEditing = id !== 'new'
-  const { categories, createCategory, updateCategory } = useCategories()
+  const { categories, createCategory, updateCategory, reload: reloadCategories } = useCategories()
+
+  useFocusEffect(
+    useCallback(() => {
+      reloadCategories()
+    }, [reloadCategories])
+  )
 
   const category = isEditing ? categories.find(c => c.id === id) : undefined
 
