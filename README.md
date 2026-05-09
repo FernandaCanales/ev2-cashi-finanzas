@@ -6,7 +6,7 @@ Aplicación móvil de finanzas personales desarrollada con React Native + Expo p
 
 ## Video demostrativo
 
-https://youtube.com/...
+https://youtu.be/dZagfx6zjVA
 
 ## Que hace la app
 
