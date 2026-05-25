@@ -1,6 +1,7 @@
 import { Stack, router, useFocusEffect, useLocalSearchParams } from 'expo-router'
 import { useCallback } from 'react'
 import {
+  Image,
   KeyboardAvoidingView,
   Platform,
   SafeAreaView,
@@ -12,6 +13,8 @@ import {
   View,
 } from 'react-native'
 import { useCategories } from '../../../hooks/useCategories'
+import { useImagePicker } from '../../../hooks/useImagePicker'
+import { useLocation } from '../../../hooks/useLocation'
 import { useTransactionForm } from '../../../hooks/useTransactionForm'
 import { useTransactions } from '../../../hooks/useTransactions'
 
@@ -20,6 +23,8 @@ export default function TransactionFormScreen() {
   const isEditing = id !== 'new'
   const { transactions, createTransaction, updateTransaction, reload: reloadTransactions } = useTransactions()
   const { categories, reload: reloadCategories } = useCategories()
+  const { imageUri, error: imageError, takePhoto, pickFromGallery, clearImage } = useImagePicker()
+  const { location, loading: locationLoading, error: locationError, getCurrentLocation, clearLocation } = useLocation()
 
   useFocusEffect(
     useCallback(() => {
@@ -45,9 +50,17 @@ export default function TransactionFormScreen() {
     } : undefined,
     onSubmit: async (data) => {
       if (isEditing) {
-        await updateTransaction(id, data)
+        await updateTransaction(id, {
+          ...data,
+          photoUri: imageUri ?? transaction?.photoUri,
+          location: location ?? transaction?.location,
+        })
       } else {
-        await createTransaction(data)
+        await createTransaction({
+          ...data,
+          photoUri: imageUri ?? undefined,
+          location: location ?? undefined,
+        })
       }
       router.back()
     },
@@ -128,6 +141,57 @@ export default function TransactionFormScreen() {
               </ScrollView>
             )}
             {errors.categoryId ? <Text style={styles.error}>{errors.categoryId}</Text> : null}
+
+            {/* SECCION FOTO */}
+            <Text style={styles.label}>Foto del comprobante</Text>
+            <View style={styles.photoButtons}>
+              <TouchableOpacity style={styles.photoButton} onPress={takePhoto}>
+                <Text style={styles.photoButtonText}>Tomar foto</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.photoButton} onPress={pickFromGallery}>
+                <Text style={styles.photoButtonText}>Desde galería</Text>
+              </TouchableOpacity>
+            </View>
+            {imageError ? <Text style={styles.error}>{imageError}</Text> : null}
+            {imageUri ? (
+              <View style={styles.imagePreview}>
+                <Image source={{ uri: imageUri }} style={styles.image} />
+                <TouchableOpacity style={styles.clearButton} onPress={clearImage}>
+                  <Text style={styles.clearButtonText}>Quitar foto</Text>
+                </TouchableOpacity>
+              </View>
+            ) : transaction?.photoUri ? (
+              <View style={styles.imagePreview}>
+                <Image source={{ uri: transaction.photoUri }} style={styles.image} />
+              </View>
+            ) : null}
+
+            {/* SECCION UBICACION */}
+            <Text style={styles.label}>Ubicación</Text>
+            <TouchableOpacity
+              style={styles.locationButton}
+              onPress={getCurrentLocation}
+              disabled={locationLoading}
+            >
+              <Text style={styles.locationButtonText}>
+                {locationLoading ? 'Obteniendo ubicación...' : 'Registrar ubicación actual'}
+              </Text>
+            </TouchableOpacity>
+            {locationError ? <Text style={styles.error}>{locationError}</Text> : null}
+            {location ? (
+              <View style={styles.locationInfo}>
+                <Text style={styles.locationText}>Latitud: {location.latitude.toFixed(6)}</Text>
+                <Text style={styles.locationText}>Longitud: {location.longitude.toFixed(6)}</Text>
+                <TouchableOpacity onPress={clearLocation}>
+                  <Text style={styles.clearButtonText}>Quitar ubicación</Text>
+                </TouchableOpacity>
+              </View>
+            ) : transaction?.location ? (
+              <View style={styles.locationInfo}>
+                <Text style={styles.locationText}>Latitud: {transaction.location.latitude.toFixed(6)}</Text>
+                <Text style={styles.locationText}>Longitud: {transaction.location.longitude.toFixed(6)}</Text>
+              </View>
+            ) : null}
 
             <TouchableOpacity
               style={styles.button}
@@ -272,5 +336,66 @@ const styles = StyleSheet.create({
   cancelText: {
     color: '#999',
     fontSize: 16,
+  },
+  photoButtons: {
+    flexDirection: 'row',
+    gap: 8,
+    marginBottom: 12,
+  },
+  photoButton: {
+    flex: 1,
+    padding: 12,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#410455',
+    alignItems: 'center',
+  },
+  photoButtonText: {
+    color: '#410455',
+    fontWeight: '600',
+    fontSize: 14,
+  },
+  imagePreview: {
+    marginBottom: 16,
+    alignItems: 'center',
+  },
+  image: {
+    width: '100%',
+    height: 200,
+    borderRadius: 8,
+    marginBottom: 8,
+  },
+  clearButton: {
+    padding: 8,
+  },
+  clearButtonText: {
+    color: '#e74c3c',
+    fontSize: 14,
+    fontWeight: '600',
+  },
+  locationButton: {
+    backgroundColor: '#f0e6ff',
+    borderRadius: 8,
+    padding: 12,
+    alignItems: 'center',
+    marginBottom: 12,
+    borderWidth: 1,
+    borderColor: '#410455',
+  },
+  locationButtonText: {
+    color: '#410455',
+    fontWeight: '600',
+    fontSize: 14,
+  },
+  locationInfo: {
+    backgroundColor: '#f0e6ff',
+    borderRadius: 8,
+    padding: 12,
+    marginBottom: 16,
+  },
+  locationText: {
+    color: '#410455',
+    fontSize: 14,
+    marginBottom: 4,
   },
 })

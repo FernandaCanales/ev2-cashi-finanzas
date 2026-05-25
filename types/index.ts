@@ -10,6 +10,12 @@ export interface Transaction {
   description: string
   date: string
   categoryId: string
+  // Nuevo en Evaluación 3
+  photoUri?: string
+  location?: {
+    latitude: number
+    longitude: number
+  }
 }
 
 export type CreateCategoryInput = Pick<Category, 'name'>

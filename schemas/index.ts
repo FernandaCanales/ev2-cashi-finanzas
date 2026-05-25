@@ -9,6 +9,11 @@ export const createTransactionSchema = z.object({
   type: z.enum(['income', 'expense']),
   description: z.string().min(1, 'La descripción no puede estar vacía'),
   categoryId: z.string().min(1, 'Selecciona una categoría'),
+  photoUri: z.string().optional(),
+  location: z.object({
+    latitude: z.number(),
+    longitude: z.number(),
+  }).optional(),
 })
 
 export type CreateCategoryInput = z.infer<typeof createCategorySchema>
