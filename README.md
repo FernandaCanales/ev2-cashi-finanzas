@@ -1,12 +1,16 @@
 # Cashi — App Mobile de Finanzas Personales
 
-Aplicación móvil de finanzas personales desarrollada con React Native + Expo para la Evaluación 2 del ramo Desarrollo de Aplicaciones Móviles.
+Aplicación móvil de finanzas personales desarrollada con React Native + Expo para la Evaluación 2 y 3 del ramo Desarrollo de Aplicaciones Móviles.
 
 ---
 
-## Video demostrativo
-
+## Video demostrativo Evaluación 2
 https://youtu.be/dZagfx6zjVA
+
+## Video demostrativo Evaluación 3
+https://youtube.com/...
+
+---
 
 ## Que hace la app
 
@@ -15,6 +19,22 @@ https://youtu.be/dZagfx6zjVA
 - Gestión de transacciones (crear, listar, editar, eliminar)
 - Pantalla de balance con total ingresos, egresos y balance
 - Datos persistidos en el dispositivo con AsyncStorage
+- Adjuntar foto del comprobante a cada transacción (cámara o galería)
+- Registrar ubicación GPS al crear una transacción
+
+---
+
+## Qué cambió en la Evaluación 3
+
+Se extendió el modelo de datos de Transaction con dos campos opcionales:
+- photoUri: URI local de la foto del comprobante
+- location: coordenadas GPS (latitude y longitude)
+
+Ambos campos son opcionales. Las transacciones sin foto ni ubicación siguen funcionando igual.
+
+Se agregaron dos hooks nuevos:
+- useImagePicker — maneja cámara, galería y permisos
+- useLocation — maneja GPS y permisos
 
 ---
 
@@ -42,10 +62,16 @@ https://youtu.be/dZagfx6zjVA
 5. Instalar Zod:
    yarn add zod
 
-6. Correr la app:
+6. Instalar expo-image-picker:
+   npx expo install expo-image-picker
+
+7. Instalar expo-location:
+   npx expo install expo-location
+
+8. Correr la app:
    yarn start
 
-7. Escanear el QR con Expo Go
+9. Escanear el QR con Expo Go
 
 ### Credenciales de acceso
 - Email: fernanda@correo.cl
@@ -65,6 +91,8 @@ La app sigue el patrón de separación entre lógica y presentación:
 - `useTransactions` — CRUD de transacciones + cálculo del balance
 - `useCategoryForm` — validación del formulario de categorías con Zod
 - `useTransactionForm` — validación del formulario de transacciones con Zod
+- `useImagePicker` — acceso a cámara y galería + manejo de permisos
+- `useLocation` — acceso a GPS + manejo de permisos
 
 ---
 
@@ -76,12 +104,15 @@ Se utilizó Claude (Anthropic) como asistente durante el desarrollo.
 - Generación de la estructura base de hooks y pantallas
 - Corrección de errores de compatibilidad con Zod v4
 - Configuración de rutas dinámicas con Expo Router
+- Generación de hooks useImagePicker y useLocation
 
 **Qué aprendimos:**
 - La importancia de separar la lógica en custom hooks
 - Cómo funciona el patrón read-modify-write de AsyncStorage
 - Por qué el balance debe calcularse en el hook y no en el componente
-- Cómo usar `useFocusEffect` para actualizar datos al volver a una pantalla
+- Cómo usar useFocusEffect para actualizar datos al volver a una pantalla
+- Cómo manejar permisos de hardware en el hook y no en el componente
+- Que los permisos de cámara, galería y GPS solo se piden la primera vez
 
 ---
 
@@ -92,3 +123,5 @@ Se utilizó Claude (Anthropic) como asistente durante el desarrollo.
 - Expo Router v6
 - AsyncStorage v2
 - Zod v4
+- expo-image-picker v17
+- expo-location v19

@@ -65,3 +65,20 @@ los errores encontrados y las soluciones aplicadas.
 - El patrón read-modify-write de AsyncStorage debe aplicarse en el hook, nunca en el componente
 - Probar el flujo completo de la app (crear, editar, eliminar) es fundamental para detectar errores que no aparecen probando cada pantalla por separado
 - La IA genera una base funcional, pero los errores de comportamiento real solo se detectan usando la app en el dispositivo
+
+---
+
+### Error 8 — photoUri y location no eran reconocidos por TypeScript
+**Qué pasó:** Al agregar photoUri y location al formulario de transacción, TypeScript marcó error diciendo que esas propiedades no existían en el tipo.
+**Por qué:** El schema de Zod definía CreateTransactionInput sin esos campos, y ese tipo sobreescribía el de types/index.ts.
+**Solución:** Agregar photoUri y location como campos opcionales en createTransactionSchema en schemas/index.ts.
+
+---
+
+## Qué aprendimos en la Evaluación 3
+
+- Los permisos de hardware siempre deben pedirse en el hook, nunca en el componente
+- El sistema operativo solo muestra la ventana de permiso la primera vez — después recuerda la decisión del usuario
+- Si el permiso está denegado, la app debe mostrar un mensaje de error en pantalla sin usar Alert
+- Los campos opcionales en TypeScript se marcan con ? y permiten extender el modelo de datos sin romper lo que ya funcionaba
+- expo-image-picker y expo-location deben instalarse con npx expo install para garantizar compatibilidad con el SDK
