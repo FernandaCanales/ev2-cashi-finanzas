@@ -5,6 +5,7 @@ export const useImagePicker = () => {
   const [imageUri, setImageUri] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
 
+//funcion para tomar foto con la cámara
   const takePhoto = async () => {
     const permission = await ImagePicker.requestCameraPermissionsAsync()
     if (!permission.granted) {
@@ -21,7 +22,7 @@ export const useImagePicker = () => {
       setError(null)
     }
   }
-
+//funcion para seleccionar foto de la galería
   const pickFromGallery = async () => {
     const permission = await ImagePicker.requestMediaLibraryPermissionsAsync()
     if (!permission.granted) {

@@ -10,7 +10,8 @@ export interface Transaction {
   description: string
   date: string
   categoryId: string
-  // Nuevo en Evaluación 3
+
+  //Evaluación 3, campos opcionales para foto y ubicación
   photoUri?: string
   location?: {
     latitude: number

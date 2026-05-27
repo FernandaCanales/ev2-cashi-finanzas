@@ -15,12 +15,12 @@ export const useLocation = () => {
     setLoading(true)
     setError(null)
     try {
-      const { status } = await Location.requestForegroundPermissionsAsync()
+      const { status } = await Location.requestForegroundPermissionsAsync() //Solicitar permisos de ubicación
       if (status !== 'granted') {
         setError('Se necesita permiso para acceder a la ubicación')
         return
       }
-      const loc = await Location.getCurrentPositionAsync({})
+      const loc = await Location.getCurrentPositionAsync({}) //Obtener la ubicación actual
       setLocation({
         latitude: loc.coords.latitude,
         longitude: loc.coords.longitude,
