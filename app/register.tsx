@@ -1,37 +1,40 @@
 import { router } from 'expo-router'
 import { useState } from 'react'
 import {
-  KeyboardAvoidingView,
-  Platform,
-  SafeAreaView,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
+    KeyboardAvoidingView,
+    Platform,
+    SafeAreaView,
+    StyleSheet,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    View,
 } from 'react-native'
 import { useAuth } from '../contexts/AuthContext'
 
-export default function LoginScreen() {
-  const { login } = useAuth()
+export default function RegisterScreen() {
+  const { register } = useAuth()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
 
-  const handleLogin = async () => {
+  const handleRegister = async () => {
     if (!email || !password) {
       setError('Completa todos los campos')
+      return
+    }
+    if (password.length < 8) {
+      setError('La contraseña debe tener al menos 8 caracteres')
       return
     }
     setError('')
     setLoading(true)
     try {
-      // login llama a la API real y guarda el token en SecureStore
-      await login(email, password)
+      // register llama a la API real y guarda el token en SecureStore
+      await register(email, password)
       router.replace('/(tabs)')
     } catch (e: any) {
-      // El error viene del servidor en español
       setError(e.message)
     } finally {
       setLoading(false)
@@ -49,7 +52,7 @@ export default function LoginScreen() {
             <Text style={styles.logoText}>C</Text>
           </View>
           <Text style={styles.title}>Cashi</Text>
-          <Text style={styles.subtitle}>Tus finanzas, bajo control</Text>
+          <Text style={styles.subtitle}>Crea tu cuenta</Text>
 
           <TextInput
             style={styles.input}
@@ -63,7 +66,7 @@ export default function LoginScreen() {
 
           <TextInput
             style={styles.input}
-            placeholder="Contraseña"
+            placeholder="Contraseña (mínimo 8 caracteres)"
             placeholderTextColor="#999"
             secureTextEntry
             value={password}
@@ -74,20 +77,20 @@ export default function LoginScreen() {
 
           <TouchableOpacity
             style={styles.button}
-            onPress={handleLogin}
+            onPress={handleRegister}
             disabled={loading}
           >
             <Text style={styles.buttonText}>
-              {loading ? 'Ingresando...' : 'Ingresar'}
+              {loading ? 'Registrando...' : 'Crear cuenta'}
             </Text>
           </TouchableOpacity>
 
           <TouchableOpacity
-            style={styles.registerButton}
-            onPress={() => router.push('/register')}
+            style={styles.loginButton}
+            onPress={() => router.back()}
           >
-            <Text style={styles.registerText}>
-              ¿No tienes cuenta? Regístrate
+            <Text style={styles.loginText}>
+              ¿Ya tienes cuenta? Inicia sesión
             </Text>
           </TouchableOpacity>
         </View>
@@ -173,11 +176,11 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 16,
   },
-  registerButton: {
+  loginButton: {
     marginTop: 16,
     padding: 8,
   },
-  registerText: {
+  loginText: {
     color: '#410455',
     fontSize: 14,
   },
