@@ -1,23 +1,38 @@
 import { router, useFocusEffect } from 'expo-router'
-import { useCallback } from 'react'
+import { useCallback, useState } from 'react'
 import {
-    FlatList,
-    SafeAreaView,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
+  Alert,
+  FlatList,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from 'react-native'
 import { useCategories } from '../../hooks/useCategories'
 
 export default function CategoriesScreen() {
   const { categories, loading, deleteCategory, reload } = useCategories()
+  const [deleteError, setDeleteError] = useState<string | null>(null)
 
   useFocusEffect(
     useCallback(() => {
       reload()
     }, [reload])
   )
+
+  const handleDelete = async (id: string) => {
+    setDeleteError(null)
+    try {
+      await deleteCategory(id)
+    } catch (e: any) {
+      Alert.alert(
+        'No se puede eliminar',
+        'Esta categoría tiene transacciones asociadas. Elimina primero las transacciones.',
+        [{ text: 'Entendido' }]
+      )
+    }
+  }
 
   return (
     <SafeAreaView style={styles.safe}>
@@ -49,7 +64,7 @@ export default function CategoriesScreen() {
                   </TouchableOpacity>
                   <TouchableOpacity
                     style={styles.deleteButton}
-                    onPress={() => deleteCategory(item.id)}
+                    onPress={() => handleDelete(item.id)}
                   >
                     <Text style={styles.deleteText}>Eliminar</Text>
                   </TouchableOpacity>
@@ -64,14 +79,8 @@ export default function CategoriesScreen() {
 }
 
 const styles = StyleSheet.create({
-  safe: {
-    flex: 1,
-    backgroundColor: '#f5f5f5',
-  },
-  container: {
-    flex: 1,
-    padding: 16,
-  },
+  safe: { flex: 1, backgroundColor: '#f5f5f5' },
+  container: { flex: 1, padding: 16 },
   addButton: {
     backgroundColor: '#410455',
     borderRadius: 8,
@@ -79,17 +88,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 16,
   },
-  addButtonText: {
-    color: '#fff',
-    fontWeight: 'bold',
-    fontSize: 16,
-  },
-  message: {
-    textAlign: 'center',
-    color: '#999',
-    marginTop: 32,
-    fontSize: 16,
-  },
+  addButtonText: { color: '#fff', fontWeight: 'bold', fontSize: 16 },
+  message: { textAlign: 'center', color: '#999', marginTop: 32, fontSize: 16 },
   card: {
     backgroundColor: '#fff',
     borderRadius: 12,
@@ -100,35 +100,20 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     elevation: 2,
   },
-  categoryName: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#1a1a1a',
-  },
-  actions: {
-    flexDirection: 'row',
-    gap: 8,
-  },
+  categoryName: { fontSize: 16, fontWeight: '600', color: '#1a1a1a' },
+  actions: { flexDirection: 'row', gap: 8 },
   editButton: {
     backgroundColor: '#f0e6ff',
     borderRadius: 6,
     paddingHorizontal: 12,
     paddingVertical: 6,
   },
-  editText: {
-    color: '#410455',
-    fontWeight: '600',
-    fontSize: 14,
-  },
+  editText: { color: '#410455', fontWeight: '600', fontSize: 14 },
   deleteButton: {
     backgroundColor: '#ffe6e6',
     borderRadius: 6,
     paddingHorizontal: 12,
     paddingVertical: 6,
   },
-  deleteText: {
-    color: '#e74c3c',
-    fontWeight: '600',
-    fontSize: 14,
-  },
+  deleteText: { color: '#e74c3c', fontWeight: '600', fontSize: 14 },
 })
